@@ -26,7 +26,7 @@ logger () {
 }
 
 remove_old_installations () {
-    apt-get remove --purge -y 'apache2-*' > /dev/null
+    apt-get remove --purge -y 'apache2-*' 'mysql-*' 'php-*' > /dev/null
 }
 
 update_repositories() {
@@ -108,6 +108,7 @@ logger info "Installing mysql"
 apt-get install -y mysql-server mysql-client > /dev/null
 logger success "Mysql has been installed"
 logger info "Starting mysql service"
+usermod -d /var/lib/mysql/ mysql > /dev/null
 service mysql start > /dev/null
 exit_status=$?
 
@@ -151,3 +152,17 @@ fi
 
 # Reload privileges table
 flush_privileges
+
+# PHP Installation
+logger info "Adding latest php repository"
+sudo add-apt-repository -y ppa:ondrej/php > /dev/null
+logger info "Updating repositories"
+apt-get update > /dev/null
+logger info "Installing php"
+apt-get install -y php"$PHP_VERSION" > /dev/null
+logger success "PHP has been installed"
+logger info "Restarting apache2 service"
+rm -rf /var/www/html/*
+echo "<?php phpinfo(); ?>" > /var/www/html/index.php
+service apache2 restart > /dev/null
+logger info "Apache2 service restarted"
