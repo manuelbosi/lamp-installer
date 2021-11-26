@@ -47,7 +47,16 @@ then
     exit
 fi
 
-# Clean system
+# Export .env variables
+if [ -f .env ]
+then
+    export $(cat .env | sed '/^#/d' | xargs)
+else
+    logger error ".env file not found"
+    exit
+fi
+
+# Clean the system
 logger info "Cleaning the system from previous installations"
 remove_old_installations
 logger success "System cleanup completed"
