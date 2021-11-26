@@ -64,4 +64,19 @@ apt-get install -y apache2 > /dev/null
 logger success "Apache has been installed"
 logger info "Starting apache2 service"
 service apache2 start > /dev/null
-logger success "Apache2 service started"
+
+# Install mysql (client and server)
+logger info "Installing mysql"
+apt-get install -y mysql-server mysql-client > /dev/null
+logger success "Mysql has been installed"
+logger info "Starting mysql service"
+service mysql start > /dev/null
+exit_status=$?
+
+# Check exit status and log response
+if [ "$exit_status" -eq 0 ]
+then
+    logger success "Mysql service started"
+else
+    logger error "Cannot start mysql"
+fi
