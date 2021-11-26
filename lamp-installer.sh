@@ -38,6 +38,26 @@ add_ppa_repository () {
     add-apt-repository -y $1 > /dev/null 
 }
 
+remove_anonymous_users () {
+    mysql -e "DELETE FROM mysql.user WHERE User='';"
+    logger success "Anonoymous users have been removed"
+}
+
+remove_remote_root () {
+    mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+    logger success "Remote root login has been disabled"
+}
+
+remove_test_db () {
+    mysql -e "DROP DATABASE IF EXISTS test;"
+    logger success "Test database has been deleted"
+}
+
+flush_privileges () {
+    mysql -e "FLUSH PRIVILEGES;"
+    logger success "Privileges have been reloaded"
+}
+
 ### MAIN ###
 
 # Check if the script is running as root
@@ -98,3 +118,35 @@ then
 else
     logger error "Cannot start mysql"
 fi
+
+## CONFIGURE MYSQL
+# Update root password
+if [ $ROOT_PASSWORD != '' ]
+then
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '"$ROOT_PASSWORD"';"
+    logger success "Root password has been changed"
+    flush_privileges
+else
+    logger error "Root password cannot be empty"
+fi
+
+# Remove anonymous users
+if [ $REMOVE_ANONYMOUS_USER = 'yes' ]
+then
+    remove_anonymous_users
+fi
+
+# Disable remote login on root user
+if [ $REMOVE_REMOTE_ROOT = 'yes' ]
+then
+    remove_remote_root
+fi
+
+# Remove test database
+if [ $REMOVE_TEST_DB = 'yes' ]
+then
+    remove_test_db
+fi
+
+# Reload privileges table
+flush_privileges
