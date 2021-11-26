@@ -128,6 +128,7 @@ then
     flush_privileges
 else
     logger error "Root password cannot be empty"
+    exit
 fi
 
 # Remove anonymous users
