@@ -165,4 +165,14 @@ logger info "Restarting apache2 service"
 rm -rf /var/www/html/*
 echo "<?php phpinfo(); ?>" > /var/www/html/index.php
 service apache2 restart > /dev/null
-logger info "Apache2 service restarted"
+exit_status=$?
+
+# Check exit status and log response
+if [ "$exit_status" -eq 0 ]
+then
+    logger success "Apache2 service restarted"
+    ip="$(ifconfig | grep -Eo '(addr:)?([0-9]*\.){3}[0-9]*' | head -1)"
+    logger info "Check if everything works fine here: $ip"
+else
+    logger error "Cannot start apache2"
+fi
