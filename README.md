@@ -1,1 +1,1 @@
-# lamp-installer
+# LAMP INSTALLER
