@@ -179,9 +179,6 @@ fi
 # Reload privileges table
 flush_privileges
 
-# Delete mysql password enviroment variable
-unset MYSQL_PWD
-
 # PHP Installation
 logger info "Adding latest php repository"
 sudo add-apt-repository -y ppa:ondrej/php > /dev/null
@@ -247,6 +244,9 @@ logger info "Creating phpMyAdmin database configuration"
 wget -q https://raw.githubusercontent.com/phpmyadmin/phpmyadmin/STABLE/sql/create_tables.sql
 mysql -u root < create_tables.sql
 rm create_tables.sql
+
+# Delete mysql password environment variable
+unset MYSQL_PWD
 
 # Setup blowfish secret
 echo "$(pwd)"
