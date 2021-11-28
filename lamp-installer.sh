@@ -53,22 +53,22 @@ add_ppa_repository () {
 }
 
 remove_anonymous_users () {
-    mysql -e "DELETE FROM mysql.user WHERE User='';"
+    mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
     logger success "Anonoymous users have been removed"
 }
 
 remove_remote_root () {
-    mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+    mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
     logger success "Remote root login has been disabled"
 }
 
 remove_test_db () {
-    mysql -e "DROP DATABASE IF EXISTS test;"
+    mysql -u root -e "DROP DATABASE IF EXISTS test;"
     logger success "Test database has been deleted"
 }
 
 flush_privileges () {
-    mysql -e "FLUSH PRIVILEGES;"
+    mysql -u root -e "FLUSH PRIVILEGES;"
     logger success "Privileges have been reloaded"
 }
 
@@ -146,10 +146,14 @@ else
 fi
 
 ## CONFIGURE MYSQL
+
+# Export mysql password enviroment variable
+export MYSQL_PWD="$ROOT_PASSWORD"
+
 # Update root password
-if [ $ROOT_PASSWORD != '' ]
+if [ "$ROOT_PASSWORD" != '' ]
 then
-    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '"$ROOT_PASSWORD"';"
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '"$ROOT_PASSWORD"';"
     logger success "Root password has been changed"
     flush_privileges
 else
@@ -158,25 +162,28 @@ else
 fi
 
 # Remove anonymous users
-if [ $REMOVE_ANONYMOUS_USER = 'yes' ]
+if [ "$REMOVE_ANONYMOUS_USER" = 'yes' ]
 then
     remove_anonymous_users
 fi
 
 # Disable remote login on root user
-if [ $REMOVE_REMOTE_ROOT = 'yes' ]
+if [ "$REMOVE_REMOTE_ROOT" = 'yes' ]
 then
     remove_remote_root
 fi
 
 # Remove test database
-if [ $REMOVE_TEST_DB = 'yes' ]
+if [ "$REMOVE_TEST_DB" = 'yes' ]
 then
     remove_test_db
 fi
 
 # Reload privileges table
 flush_privileges
+
+# Delete mysql password enviroment variable
+unset MYSQL_PWD
 
 # PHP Installation
 logger info "Adding latest php repository"
