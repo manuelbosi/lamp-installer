@@ -37,6 +37,7 @@ remove_old_installations () {
     rm -rf /var/www/
     rm -rf /etc/mysql
     rm -rf /var/lib/mysql*
+    rm -rf /etc/php/
     rm -rf /usr/share/phpMyAdmin* > /dev/null
     rm -rf /usr/share/phpmyadmin* > /dev/null
     rm -f /etc/apache2/conf-available/phpmyadmin.conf > /dev/null
