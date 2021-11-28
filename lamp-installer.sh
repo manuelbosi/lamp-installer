@@ -226,14 +226,33 @@ chmod -R 744 phpmyadmin
 
 logger success "phpMyAdmin has been installed"
 
-phpmyadmin_conf="$OLDPWD"/phpmyadmin.conf
+cd "$OLDPWD"
+phpmyadmin_conf=phpmyadmin.conf
 if [ -f "$phpmyadmin_conf" ]
 then
     logger info "Updating phpMyAdmin configuration"
-    # sed -i "s/IP_ADDRESS/$ip/" "$phpmyadmin_conf"
     cp "$phpmyadmin_conf" /etc/apache2/conf-available/
 fi
 
+# Create phpmyadmin database
+logger info "Creating phpMyAdmin database configuration"
+wget -q https://raw.githubusercontent.com/phpmyadmin/phpmyadmin/STABLE/sql/create_tables.sql
+mysql -u root < create_tables.sql
+rm create_tables.sql
+
+# Setup blowfish secret
+echo "$(pwd)"
+# mv /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
+# blowfish_secret=''
+# if [ "$BLOWFISH_SECRET" != '' ]
+# then
+#     blowfish_secret="$BLOWFISH_SECRET"
+# else
+#     blowfish_secret=$(openssl rand -base64 32)
+# fi
+# sed -i 's/$cfg["blowfish_secret"] = '';/$cfg["blowfish_secret"] = '"blowfish_secret"';/' config.inc.php
+
+# Enable phpmyadmin apache configuration
 a2enconf phpmyadmin > /dev/null
 logger success "phpMyAdmin configuration has beed updated"
 restart_service apache2
