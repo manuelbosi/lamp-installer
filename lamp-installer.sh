@@ -53,7 +53,7 @@ add_ppa_repository () {
 
 remove_anonymous_users () {
     mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-    logger success "Anonoymous users have been removed"
+    logger success "Anonymous users have been removed"
 }
 
 remove_remote_root () {
