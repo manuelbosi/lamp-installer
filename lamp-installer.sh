@@ -237,7 +237,7 @@ cd "$OLDPWD"
 phpmyadmin_conf=phpmyadmin.conf
 if [ -f "$phpmyadmin_conf" ]
 then
-    logger info "phpMyAdmin apache configuration updated"
+    logger success "phpMyAdmin apache configuration updated"
     cp "$phpmyadmin_conf" /etc/apache2/conf-available/
 fi
 
