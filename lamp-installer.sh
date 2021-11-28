@@ -262,5 +262,5 @@ logger success "Blowfish secret updated"
 
 # Enable phpmyadmin apache configuration
 a2enconf phpmyadmin > /dev/null
-logger success "phpMyAdmin configuration has beed updated"
+logger success "phpMyAdmin configuration has been updated"
 restart_service apache2
