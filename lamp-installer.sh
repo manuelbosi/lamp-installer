@@ -103,7 +103,7 @@ logger success "System cleanup completed"
 exit 
 
 # Install dependencies
-apt-get install -y software-properties-common > /dev/null
+apt-get install -y software-properties-common net-tools > /dev/null
 
 # Install apache
 logger info "Adding latest apache2 repository"
