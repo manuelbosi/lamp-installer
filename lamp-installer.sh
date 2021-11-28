@@ -29,14 +29,18 @@ logger () {
 }
 
 remove_old_installations () {
-    apt-get clean > /dev/null
-    apt-get purge -y 'apache2*' 'mysql*' 'php*' 'phpmyadmin*' > /dev/null
-    # rm -rf /etc/apache2
-    # rm -rf /etc/mysql
-    # rm -rf /var/lib/mysql
-    # rm -rf /usr/share/phpMyAdmin* > /dev/null
-    # rm -rf /usr/share/phpmyadmin* > /dev/null
-    # rm -f /etc/apache2/conf-available/phpmyadmin.conf > /dev/null
+    logger info "Stopping apache2 service if running"
+    service apache2 stop > /dev/null
+    logger info "Stopping mysql service if running"
+    service mysql stop > /dev/null
+    apt-get purge -y 'apache2*' 'mysql*' 'php*' 'phpmyadmin' > /dev/null
+    rm -rf /etc/apache2/
+    rm -rf /var/www/
+    rm -rf /etc/mysql
+    rm -rf /var/lib/mysql*
+    rm -rf /usr/share/phpMyAdmin* > /dev/null
+    rm -rf /usr/share/phpmyadmin* > /dev/null
+    rm -f /etc/apache2/conf-available/phpmyadmin.conf > /dev/null
 }
 
 update_repositories() {
