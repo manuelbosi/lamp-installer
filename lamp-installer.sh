@@ -249,16 +249,14 @@ rm create_tables.sql
 unset MYSQL_PWD
 
 # Setup blowfish secret
-echo "$(pwd)"
-# mv /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
-# blowfish_secret=''
-# if [ "$BLOWFISH_SECRET" != '' ]
-# then
-#     blowfish_secret="$BLOWFISH_SECRET"
-# else
-#     blowfish_secret=$(openssl rand -base64 32)
-# fi
-# sed -i 's/$cfg["blowfish_secret"] = '';/$cfg["blowfish_secret"] = '"blowfish_secret"';/' config.inc.php
+blowfish_secret=''
+if [ "$BLOWFISH_SECRET" != '' ]
+then
+    blowfish_secret="$BLOWFISH_SECRET"
+else
+    blowfish_secret=$(openssl rand -base64 32)
+fi
+sed -e "s|cfg\['blowfish_secret'\] = ''|cfg['blowfish_secret'] = '$blowfish_secret'|" /usr/share/phpmyadmin/config.sample.inc.php > /usr/share/phpmyadmin/config.inc.php
 
 # Enable phpmyadmin apache configuration
 a2enconf phpmyadmin > /dev/null
