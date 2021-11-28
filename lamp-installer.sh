@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #### GLOBAL ####
-ip="$(ifconfig | grep -Eo '(addr:)?([0-9]*\.){3}[0-9]*' | head -1)"
 
 #### COLOR ####
 INFO=$(tput setaf 6)
@@ -198,6 +197,7 @@ restart_service apache2
 exit_status=$?
 
 # Check exit status and log response
+ip="$(ifconfig | grep -Eo '(addr:)?([0-9]*\.){3}[0-9]*' | head -1)"
 if [ "$exit_status" -eq 0 ]
 then
     logger success "Apache2 service restarted"
