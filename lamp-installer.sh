@@ -104,8 +104,6 @@ remove_old_installations
 update_repositories
 logger success "System cleanup completed"
 
-exit 
-
 # Install dependencies
 apt-get install -y software-properties-common net-tools > /dev/null
 
@@ -234,7 +232,6 @@ rm -rf phpMyAdmin-"$PHPMYADMIN_VERSION"-all-languages
 rm -rf "$phpMyAdminArchive"
 chown -R www-data: phpmyadmin
 chmod -R 744 phpmyadmin
-
 logger success "phpMyAdmin has been installed"
 
 cd "$OLDPWD"
