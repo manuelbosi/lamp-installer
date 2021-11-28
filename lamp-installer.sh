@@ -104,6 +104,7 @@ update_repositories
 logger success "System cleanup completed"
 
 # Install dependencies
+logger info "Installing script dependencies"
 apt-get install -y software-properties-common net-tools > /dev/null
 
 # Install apache
@@ -257,6 +258,7 @@ else
     blowfish_secret=$(openssl rand -base64 32)
 fi
 sed -e "s|cfg\['blowfish_secret'\] = ''|cfg['blowfish_secret'] = '$blowfish_secret'|" /usr/share/phpmyadmin/config.sample.inc.php > /usr/share/phpmyadmin/config.inc.php
+logger success "Blowfish secret updated"
 
 # Enable phpmyadmin apache configuration
 a2enconf phpmyadmin > /dev/null
