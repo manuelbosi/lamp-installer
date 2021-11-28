@@ -113,7 +113,7 @@ update_repositories
 logger info "Installing apache2"
 apt-get install -y apache2 > /dev/null
 logger success "Apache has been installed"
-logger info "Starting apache2 service"
+logger info "Running apache2 service"
 start_service apache2
 exit_status=$?
 
@@ -129,7 +129,7 @@ fi
 logger info "Installing mysql"
 apt-get install -y mysql-server mysql-client > /dev/null
 logger success "Mysql has been installed"
-logger info "Starting mysql service"
+logger info "Running mysql service"
 usermod -d /var/lib/mysql/ mysql > /dev/null
 start_service mysql
 exit_status=$?
@@ -144,7 +144,7 @@ fi
 
 ## CONFIGURE MYSQL
 
-# Export mysql password enviroment variable
+# Export mysql password environment variable
 export MYSQL_PWD="$ROOT_PASSWORD"
 
 # Update root password
@@ -238,7 +238,7 @@ cd "$OLDPWD"
 phpmyadmin_conf=phpmyadmin.conf
 if [ -f "$phpmyadmin_conf" ]
 then
-    logger info "Updating phpMyAdmin configuration"
+    logger info "phpMyAdmin apache configuration updated"
     cp "$phpmyadmin_conf" /etc/apache2/conf-available/
 fi
 
