@@ -29,7 +29,7 @@ PHPMYADMIN_VERSION=5.1.1
 BLOWFISH_SECRET=
 ```
 
-Run the script executable
+Run the script
 ```shell
 sudo ./lamp-installer.sh
 ```
