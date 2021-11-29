@@ -28,4 +28,10 @@ REMOVE_TEST_DB=yes
 PHPMYADMIN_VERSION=5.1.1
 BLOWFISH_SECRET=
 ```
+
+Run the script executable
+```shell
+sudo ./lamp-installer.sh
+```
+
 For more details on configuration check the .env file
