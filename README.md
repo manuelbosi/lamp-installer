@@ -34,4 +34,8 @@ Run the script
 sudo ./lamp-installer.sh
 ```
 
-For more details on configuration check the .env file
+## Testing
+Tested on Ubuntu 20.04
+
+<br>
+Check the .env file for more details on configuration
